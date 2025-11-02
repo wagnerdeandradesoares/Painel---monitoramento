@@ -35,6 +35,14 @@ async function carregarStatus() {
     sortedFiliais.forEach(l => {
       const tr = document.createElement("tr");
 
+      // Definir a cor do status
+      let statusColor = '';
+      if (l.status === 'ERRO') {
+        statusColor = 'background-color: #fc515fff; color: rgba(65, 60, 60, 1);';  // Vermelho para ERRO
+      } else if (l.status === 'OK') {
+        statusColor = 'background-color: #d4edda; color: #155724;';  // Verde para OK
+      }
+
       // Substituindo as quebras de linha no 'detalhe' para exibir corretamente no HTML
       const detalheFormatado = (l.detalhe || '').replace(/\n/g, '<br>'); // Substitui quebras de linha
 
@@ -42,7 +50,7 @@ async function carregarStatus() {
         <td>${l.ultima_execucao || '-'}</td>
         <td>${l.filial}</td>
         <td>${l.terminal}</td>
-        <td>${l.status}</td>
+        <td style="${statusColor}">${l.status}</td> <!-- Aplicando a cor ao status -->
         <td class="detalhe">${detalheFormatado}</td> <!-- Exibindo o detalhe com as quebras de linha -->
       `;
       tbody.appendChild(tr);
@@ -90,18 +98,25 @@ async function carregarConfig() {
 
 async function salvarConfig() {
   try {
-    const novoCfg = JSON.parse(document.getElementById('configArea').value);
+    const novoCfg = JSON.parse(document.getElementById('configArea').value); // Obtém e converte os dados da área de texto para JSON
     const resp = await fetch(`${API_URL}/api/config`, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(novoCfg)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(novoCfg),  // Corpo da requisição como JSON
     });
-    const res = await resp.json();
-    alert(res.msg || "Configuração salva!");
+
+    if (resp.ok) {
+      const res = await resp.json();
+      alert(res.msg || "Configuração salva com sucesso!");
+    } else {
+      const error = await resp.json();
+      alert("Erro ao salvar configuração: " + error.detail);
+    }
   } catch (e) {
     alert("Erro ao salvar configuração: " + e);
   }
 }
+
 
 // 🕹️ COMANDOS
 async function enviarComando() {
