@@ -22,7 +22,17 @@ async function carregarStatus() {
     const tbody = document.getElementById("tbodyStatus");
     tbody.innerHTML = ""; // Limpar a tabela antes de popular
 
-    dados.forEach(l => {
+    // Ordenar os dados por nome da filial
+    const sortedFiliais = dados.sort((a, b) => {
+      const nomeA = a.filial.toUpperCase();
+      const nomeB = b.filial.toUpperCase();
+      if (nomeA < nomeB) return -1; // Ordenar de forma crescente
+      if (nomeA > nomeB) return 1;
+      return 0;
+    });
+
+    // Agora, preencher a tabela com os dados ordenados
+    sortedFiliais.forEach(l => {
       const tr = document.createElement("tr");
 
       // Substituindo as quebras de linha no 'detalhe' para exibir corretamente no HTML
@@ -33,7 +43,7 @@ async function carregarStatus() {
         <td>${l.filial}</td>
         <td>${l.terminal}</td>
         <td>${l.status}</td>
-        <td class = "detalhe">${detalheFormatado}</td> <!-- Exibindo o detalhe com as quebras de linha -->
+        <td class="detalhe">${detalheFormatado}</td> <!-- Exibindo o detalhe com as quebras de linha -->
       `;
       tbody.appendChild(tr);
     });
