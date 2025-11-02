@@ -11,16 +11,16 @@
   <header>🖥️ Painel de Monitoramento</header>
 
   <nav>
-    <button class="active" onclick="showTab('status', event)">🏠Status</button>
-    <button onclick="showTab('logs', event)">🧾Logs</button>
+    <button class="active" onclick="showTab('status', event)">Status</button>
+    <button onclick="showTab('logs', event)">Logs</button>
     <button onclick="showTab('config', event)">⚙️Configuração</button>
-    <button onclick="showTab('comandos', event)">🕹️Comandos</button>
+    
   </nav>
 
   <main>
-    <!-- 🏠 STATUS -->
+    <!--  STATUS -->
     <section id="status" class="tab">
-      <h2>🏠 Status das Filiais</h2>
+      <h2></h2>
       <input id="pesquisa" placeholder="Pesquisar por filial..." oninput="filtrarFiliais()"/>
       <table id="tabelaStatus">
         <thead>

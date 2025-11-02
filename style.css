@@ -19,7 +19,7 @@ header {
 }
 nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   background: #e9eef7;
   border-bottom: 1px solid #d0d7e2;
 }
