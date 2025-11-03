@@ -3,66 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel de Monitoramento - Filiais</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Painel de Monitoramento</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <header>🖥️ Painel de Monitoramento</header>
-
-  <nav>
-    <button class="active" onclick="showTab('status', event)">Status</button>
-    <button onclick="showTab('logs', event)">Logs</button>
-    <button onclick="showTab('config', event)">⚙️Configuração</button>
-    
-  </nav>
+  <header>
+    <h1>📊 Painel de Monitoramento BKP</h1>
+  </header>
 
   <main>
-    <!--  STATUS -->
-    <section id="status" class="tab">
-      <h2></h2>
-      <input id="pesquisa" placeholder="Pesquisar por filial..." oninput="filtrarFiliais()"/>
-      <table id="tabelaStatus">
+    <!-- Aba de Status Geral -->
+    <section id="status-section">
+      <table id="filiais-tabela">
         <thead>
           <tr>
-            <th>Data</th>
             <th>Filial</th>
-            <th>Terminal</th>
+            <th>Última Execução</th>
             <th>Status</th>
-            <th>Detalhe</th>
           </tr>
         </thead>
-        <tbody id="tbodyStatus">
-        </tbody>
+        <tbody id="filiais-body"></tbody>
       </table>
-    </section>
-
-    <!-- 🧾 LOGS -->
-    <section id="logs" class="tab" style="display:none;">
-      <h2>🧾 Logs por Filial</h2>
-      <input id="filialLogs" placeholder="Digite o código da filial" />
-      <button class="action" onclick="buscarLogs()">Buscar</button>
-      <pre id="saidaLogs"></pre>
-    </section>
-
-    <!-- ⚙️ CONFIGURAÇÃO -->
-    <section id="config" class="tab" style="display:none;">
-      <h2>⚙️ Configuração do Sistema</h2>
-      <textarea id="configArea"></textarea>
-      <br/>
-      <button class="action" onclick="salvarConfig()">💾 Salvar</button>
-    </section>
-
-    <!-- 🕹️ COMANDOS -->
-    <section id="comandos" class="tab" style="display:none;">
-      <h2>🕹️ Enviar Comando</h2>
-      <input id="filialCmd" placeholder="Código da filial" />
-      <button class="action" onclick="enviarComando()">▶️ Rodar valida_bkp</button>
-      <pre id="saidaCmd"></pre>
     </section>
   </main>
 
+  <!-- Modal de Detalhes -->
+  <div id="modal-detalhes" class="modal">
+    <div class="modal-content">
+      <span class="fechar">&times;</span>
+      <h3 id="modal-filial"></h3>
+      <table id="terminais-tabela">
+        <thead>
+          <tr>
+            <th>Terminal</th>
+            <th>Status</th>
+            <th>Detalhes</th>
+          </tr>
+        </thead>
+        <tbody id="terminais-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 - Sistema de Monitoramento | Desenvolvido por Wagner de Andrade</p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
-
 </html>
