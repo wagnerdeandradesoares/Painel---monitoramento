@@ -4,6 +4,7 @@ body {
   margin: 0;
   background-color: #f8f9fa;
   color: #222;
+  overflow-x: hidden; /* Impede a rolagem horizontal */
 }
 
 header {
@@ -11,7 +12,7 @@ header {
   color: white;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 h1 {
@@ -30,7 +31,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -60,6 +61,7 @@ tr:hover {
   left: 0; top: 0;
   width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.6);
+  overflow-y: auto;
 }
 
 .modal-content {
@@ -87,6 +89,80 @@ tr:hover {
 
 .fechar:hover {
   color: #000;
+}
+
+/* ======== Status cores ======== */
+td.status-OK {
+  color: green;
+  font-weight: bold;
+}
+
+td.status-ERRO {
+  color: red;
+  font-weight: bold;
+}
+
+td.status-desconhecido {
+  color: gray;
+  font-weight: normal;
+}
+
+/* ======== Responsividade: Ajustes para telas menores ======== */
+
+/* Ajustar layout para telas menores */
+@media (max-width: 768px) {
+  header {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  table {
+    width: 100%;
+    font-size: 14px;  /* Reduzir o tamanho da fonte para telas menores */
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .modal-content {
+    width: 90%;  /* Modal ocupa mais a tela em dispositivos móveis */
+    padding: 15px;
+  }
+
+  .fechar {
+    font-size: 22px;  /* Tamanho do botão de fechar reduzido */
+  }
+}
+
+/* Para telas menores que 480px */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.2em;  /* Reduzir ainda mais o título */
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  .modal-content {
+    padding: 10px;
+  }
+
+  .fechar {
+    font-size: 18px;
+  }
+
+  td {
+    padding: 6px;  /* Menos padding nas células */
+  }
 }
 
 /* ======== Status cores ======== */
