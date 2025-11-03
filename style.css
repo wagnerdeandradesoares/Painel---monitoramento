@@ -90,6 +90,18 @@ tr:hover {
 }
 
 /* ======== Status cores ======== */
+
+td.status-ok {
+  color: green;
+  font-weight: bold;
+}
+
+td.status-erro {
+  color: red;
+  font-weight: bold;
+}
+
+/* ======== Status cores para terminais ======== */
 td.status-OK {
   color: green;
   font-weight: bold;
@@ -99,6 +111,13 @@ td.status-ERRO {
   color: red;
   font-weight: bold;
 }
+
+td.status-desconhecido {
+  color: gray;
+  font-weight: normal;
+}
+
+
 
 /* ======== Footer ======== */
 footer {

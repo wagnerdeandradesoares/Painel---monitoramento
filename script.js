@@ -47,9 +47,9 @@ async function carregarFiliais() {
 // ===============================
 function renderizarTabela(dados) {
   const corpo = document.getElementById("filiais-body");
-  corpo.innerHTML = "";
+  corpo.innerHTML = "";  // Limpar a tabela antes de renderizar novamente
 
-  // Agrupar por filial
+  // Agrupar os dados por filial
   const agrupado = {};
   dados.forEach(item => {
     const filial = item.filial || item.branch || "SEM_FILIAL";
@@ -57,27 +57,39 @@ function renderizarTabela(dados) {
     agrupado[filial].push(formatItem(item));
   });
 
-  // Criar linhas da tabela
+  // Criar as linhas da tabela para cada filial
   Object.keys(agrupado).forEach(filial => {
+    // Verificar se algum terminal da filial tem status "ERRO"
+    const temErro = agrupado[filial].some(t => t.status === "ERRO");
+
+    // Definir o status da filial: "ERRO" se algum terminal tiver erro, senão "OK"
+    const statusFilial = temErro ? "ERRO" : "OK";
+
+    // Pega o último terminal para exibir a última execução
     const ultima = agrupado[filial].sort(
       (a, b) => new Date(b.ultima_execucao || 0) - new Date(a.ultima_execucao || 0)
-    )[0];
+    )[0]; // Último terminal com base na data de última execução
 
+    // Criação da linha da tabela para a filial
     const tr = document.createElement("tr");
-    const status = ultima.status || "DESCONHECIDO";  // Garantir que se o status não existir, será "DESCONHECIDO"
-    
-    // Definir classe de status corretamente
-    const statusClass = status.toUpperCase() === "OK" ? "status-OK" : (status.toUpperCase() === "ERRO" ? "status-ERRO" : "status-desconhecido");
+
+    // Atribuir a classe de status à linha da filial
+    const statusClass = statusFilial.toUpperCase() === "OK" ? "status-ok" : "status-erro";
+    tr.classList.add(statusClass);  // Definir a cor da linha
 
     tr.innerHTML = `
       <td>${escapeHtml(filial)}</td>
       <td>${escapeHtml(ultima.ultima_execucao || "-")}</td>
-      <td class="${statusClass}">${escapeHtml(status)}</td>
+      <td class="${statusClass}">${escapeHtml(statusFilial)}</td>
     `;
+
+    // Quando clicar na linha da filial, abrir o modal com os terminais dessa filial
     tr.onclick = () => abrirModal(filial, agrupado[filial]);
+
     corpo.appendChild(tr);
   });
 }
+
 
 
 function formatItem(item) {
@@ -99,13 +111,15 @@ function abrirModal(filial, terminais) {
   const modalFilial = document.getElementById("modal-filial");
   const terminaisBody = document.getElementById("terminais-body");
 
-  // Preencher o título do modal
+  // Preencher o título do modal com o nome da filial
   modalFilial.textContent = `Detalhes da Filial: ${filial}`;
 
-  // Criar linhas para a tabela de terminais
+  // Criar as linhas para a tabela de terminais dentro do modal
   const rows = terminais.map(t => {
-    // Garantir que o status seja tratado corretamente (OK, ERRO, ou desconhecido)
+    // Garantir que o status seja tratado corretamente (OK, ERRO ou desconhecido)
     const status = t.status ? t.status.toUpperCase() : "DESCONHECIDO";
+    
+    // Atribuir a classe de cor para o status
     const statusClass = status === "OK" ? "status-OK" : (status === "ERRO" ? "status-ERRO" : "status-desconhecido");
 
     return `
@@ -115,17 +129,19 @@ function abrirModal(filial, terminais) {
         <td><pre style="white-space:pre-wrap;margin:0">${escapeHtml(t.detalhe || "")}</pre></td>
       </tr>
     `;
-  }).join("");
+  }).join("");  // Juntar todas as linhas criadas em uma string única
 
+  // Inserir as linhas de terminais no corpo da tabela
   terminaisBody.innerHTML = rows;
 
-  // Exibir o modal
+  // Exibir o modal (alterando o display para block)
   modal.style.display = "block";
 
-  // Adicionar o evento de fechar no botão
+  // Adicionar o evento de fechamento ao botão de fechar do modal
   const btnFechar = document.querySelector(".fechar");
   btnFechar.onclick = fecharModal;
 }
+
 
 
 function fecharModal() {
