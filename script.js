@@ -59,29 +59,44 @@ function renderizarTabela(dados) {
 
   // Criar as linhas da tabela para cada filial
   Object.keys(agrupado).forEach(filial => {
-    // Verificar se algum terminal da filial tem status "ERRO"
-    const temErro = agrupado[filial].some(t => t.status === "ERRO");
+  const terminais = agrupado[filial];
 
-    // Definir o status da filial: "ERRO" se algum terminal tiver erro, senão "OK"
-    const statusFilial = temErro ? "ERRO" : "OK";
+  const total = terminais.length;
+  const qtdOk = terminais.filter(t => t.status === "OK").length;
+  const qtdErro = terminais.filter(t => t.status === "ERRO").length;
 
-    // Pega o último terminal para exibir a última execução
-    const ultima = agrupado[filial].sort(
-      (a, b) => new Date(b.ultima_execucao || 0) - new Date(a.ultima_execucao || 0)
-    )[0]; // Último terminal com base na data de última execução
+  let statusFilial = "ERRO";
+  let statusClass = "status-erro";
 
-    // Criação da linha da tabela para a filial
-    const tr = document.createElement("tr");
+  if (total >= 3) {
+    if (qtdOk >= 2 && qtdErro > 0) {
+      statusFilial = "OK";
+      statusClass = "status-aviso"; // amarelo
+    } else if (qtdOk >= 2) {
+      statusFilial = "OK";
+      statusClass = "status-ok"; // verde
+    }
+  } else {
+    // Regra antiga para menos de 3 terminais
+    if (qtdErro === 0) {
+      statusFilial = "OK";
+      statusClass = "status-ok";
+    }
+  }
 
-    // Atribuir a classe de status à linha da filial
-    const statusClass = statusFilial.toUpperCase() === "OK" ? "status-ok" : "status-erro";
-    tr.classList.add(statusClass);  // Definir a cor da linha
+  // Pega o último terminal para exibir a última execução
+  const ultima = terminais.sort(
+    (a, b) => new Date(b.ultima_execucao || 0) - new Date(a.ultima_execucao || 0)
+  )[0];
 
-    tr.innerHTML = `
-      <td>${escapeHtml(filial)}</td>
-      <td>${escapeHtml(ultima.ultima_execucao || "-")}</td>
-      <td class="${statusClass}">${escapeHtml(statusFilial)}</td>
-    `;
+  const tr = document.createElement("tr");
+  tr.classList.add(statusClass);
+
+  tr.innerHTML = `
+    <td>${escapeHtml(filial)}</td>
+    <td>${escapeHtml(ultima.ultima_execucao || "-")}</td>
+    <td class="${statusClass}">${escapeHtml(statusFilial)}</td>
+  `;
 
     // Quando clicar na linha da filial, abrir o modal com os terminais dessa filial
     tr.onclick = () => abrirModal(filial, agrupado[filial]);
