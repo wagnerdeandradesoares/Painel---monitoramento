@@ -11,9 +11,53 @@ header {
   background: linear-gradient(135deg, #0078d7, #00b7c2);
   color: white;
   padding: 20px;
-  text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  justify-content: space-around;
+  display: flex;
 }
+
+.filtros {
+ margin: 10px;
+  
+}
+
+.filtros input {
+  width: 180px;
+  padding: 8px 4px;
+  font-size: 11px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.filtros input:focus {
+  outline: none;
+  border-color: #ccc;
+}
+
+.filtros input::placeholder {
+  color: #aaa;
+  padding: 4px;
+}
+
+.filtros select {
+  width: 90px;
+  padding: 7px 4px;
+  font-size: 11px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  
+  cursor: pointer;
+}
+
+.filtros select:focus {
+  outline: none;
+  border-color: #ccc;
+}
+
+
+
 
 h1 {
   margin: 0;
